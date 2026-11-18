@@ -24,7 +24,7 @@ and uses your existing browser for sign-in.
 
 Use your agent to help you install with this prompt:
 
-> "Help me install the latest https://github.com/robintegg-createfuture/slack-notifier and also install the skill globally into my copilot skills folder"
+> "Help me install the latest https://github.com/xSolutions365/slack-notifier and also install the skill globally into my copilot skills folder"
 
 ## Install
 
@@ -33,9 +33,9 @@ Install Java 21 or later, then download the latest release jar and its checksum:
 ```bash
 java -version
 mkdir -p "$HOME/.local/share/slack-notifier" &&
-curl -fL "https://github.com/robintegg-createfuture/slack-notifier/releases/latest/download/slack-notifier.jar" \
+curl -fL "https://github.com/xSolutions365/slack-notifier/releases/latest/download/slack-notifier.jar" \
   -o "$HOME/.local/share/slack-notifier/slack-notifier.jar" &&
-curl -fL "https://github.com/robintegg-createfuture/slack-notifier/releases/latest/download/checksums.txt" \
+curl -fL "https://github.com/xSolutions365/slack-notifier/releases/latest/download/checksums.txt" \
   -o "$HOME/.local/share/slack-notifier/checksums.txt" &&
 (cd "$HOME/.local/share/slack-notifier" && shasum -a 256 -c checksums.txt)
 ```
@@ -193,9 +193,9 @@ Install it from GitHub with the [`skills`](https://github.com/vercel-labs/skills
 CLI:
 
 ```bash
-npx skills add robintegg-createfuture/slack-notifier --skill slack-notifier -g                      # every detected agent, user-wide
-npx skills add robintegg-createfuture/slack-notifier --skill slack-notifier -g -a claude-code -y    # just one agent, no prompts
-npx skills add robintegg-createfuture/slack-notifier --skill slack-notifier                         # this project only
+npx skills add xSolutions365/slack-notifier --skill slack-notifier -g                      # every detected agent, user-wide
+npx skills add xSolutions365/slack-notifier --skill slack-notifier -g -a claude-code -y    # just one agent, no prompts
+npx skills add xSolutions365/slack-notifier --skill slack-notifier                         # this project only
 ```
 
 A global install puts the skill in the shared canonical directory
