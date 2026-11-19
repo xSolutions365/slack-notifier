@@ -76,13 +76,13 @@ final class Actions {
         return 0;
     }
 
-    static int send(String channelInput, String message, boolean json) throws Exception {
-        return send(channelInput, message, json, new ConfigStore(),
+    static int send(String channelInput, String message, boolean json, boolean noUnfurl) throws Exception {
+        return send(channelInput, message, json, noUnfurl, new ConfigStore(),
             config -> new SlackClient(config.getWorkspaceUrl(), config.getCredentials()),
             System.in, System.console() != null);
     }
 
-    static int send(String channelInput, String message, boolean json, ConfigStore store,
+    static int send(String channelInput, String message, boolean json, boolean noUnfurl, ConfigStore store,
         Function<StoredConfig, SlackApi> clientFactory, InputStream input, boolean stdinIsTerminal)
         throws Exception {
         StoredConfig config = store.read();
@@ -104,7 +104,14 @@ final class Actions {
         }
         SlackApi client = clientFactory.apply(config);
         String channelId = new ChannelResolver(store).resolve(client, config, channelInput);
-        JsonNode result = client.request("chat.postMessage", Map.of("channel", channelId, "text", message));
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("channel", channelId);
+        params.put("text", message);
+        if (noUnfurl) {
+            params.put("unfurl_links", "false");
+            params.put("unfurl_media", "false");
+        }
+        JsonNode result = client.request("chat.postMessage", params);
         if (json) {
             ObjectNode output = JSON.createObjectNode().put("ok", true);
             output.put("channel", textOr(result, "channel", channelId));

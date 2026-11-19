@@ -41,7 +41,7 @@ class ActionsTest {
         PrintStream original = System.out;
         try (PrintStream output = new PrintStream(bytes, true, StandardCharsets.UTF_8)) {
             System.setOut(output);
-            assertEquals(0, Actions.send("#alerts", null, true, store, ignored -> client,
+            assertEquals(0, Actions.send("#alerts", null, true, false, store, ignored -> client,
                 new ByteArrayInputStream("  Deploy finished\nsuccessfully  \n".getBytes(StandardCharsets.UTF_8)), false));
         } finally {
             System.setOut(original);
@@ -52,6 +52,31 @@ class ActionsTest {
         assertEquals("https://acme.slack.com/archives/C0123456/p123456", output.path("permalink").asText());
         assertEquals("C0123456", store.read().getChannelCache().get("alerts"));
         assertEquals(List.of("conversations.list", "chat.postMessage"), calls);
+    }
+
+    @Test void noUnfurlDisablesLinkAndMediaPreviews() throws Exception {
+        ConfigStore store = new ConfigStore(temp);
+        store.write(new StoredConfig("https://acme.slack.com", "Acme", "T1", "U1",
+            new StoredCredentials("xoxc-test", "xoxd-test"), Map.of()));
+        List<Map<String, String>> sent = new ArrayList<>();
+        SlackApi client = (method, params) -> {
+            sent.add(params);
+            return json.readTree("{\"ok\":true,\"ts\":\"1.2\"}");
+        };
+        PrintStream original = System.out;
+        try (PrintStream output = new PrintStream(new ByteArrayOutputStream(), true, StandardCharsets.UTF_8)) {
+            System.setOut(output);
+            assertEquals(0, Actions.send("C0123456", "https://example.com", false, true, store,
+                ignored -> client, new ByteArrayInputStream(new byte[0]), false));
+            assertEquals(0, Actions.send("C0123456", "https://example.com", false, false, store,
+                ignored -> client, new ByteArrayInputStream(new byte[0]), false));
+        } finally {
+            System.setOut(original);
+        }
+        assertEquals("false", sent.get(0).get("unfurl_links"));
+        assertEquals("false", sent.get(0).get("unfurl_media"));
+        assertFalse(sent.get(1).containsKey("unfurl_links"));
+        assertFalse(sent.get(1).containsKey("unfurl_media"));
     }
 
     @Test void messageFlagPreservesWhitespaceAndChannelIdsSkipLookup() throws Exception {
@@ -67,7 +92,7 @@ class ActionsTest {
         PrintStream original = System.out;
         try (PrintStream output = new PrintStream(bytes, true, StandardCharsets.UTF_8)) {
             System.setOut(output);
-            assertEquals(0, Actions.send("C0123456", "  quoted message  ", true, store,
+            assertEquals(0, Actions.send("C0123456", "  quoted message  ", true, false, store,
                 ignored -> client, new ByteArrayInputStream(new byte[0]), false));
         } finally {
             System.setOut(original);

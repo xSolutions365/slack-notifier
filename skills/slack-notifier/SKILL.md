@@ -52,6 +52,8 @@ failure nothing goes to stdout and the exit code is `1`.
 - Quote any channel starting with `#`, or the shell treats it as a comment.
 - `--channel` also accepts a bare name, a channel ID, or a Slack archive link.
   Prefer an ID when the user gives one; it skips name resolution entirely.
+- Pass `--no-unfurl` to stop Slack showing link and media previews for URLs in
+  the message.
 - Omit `--message` to read the message body from stdin, which is how to get
   command output into a channel:
 

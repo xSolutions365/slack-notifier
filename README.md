@@ -90,7 +90,7 @@ Open a new terminal and run `slack-notifier --help`.
 
 ```bash
 slack-notifier login [--headless] [--workspace <name>] [--timeout <seconds>]
-slack-notifier send --channel <name> [--message <text>] [--json]
+slack-notifier send --channel <name> [--message <text>] [--no-unfurl] [--json]
 slack-notifier whoami [--json]
 slack-notifier logout [--keep-browser-session]
 slack-notifier help [<command>] [--json]
@@ -117,6 +117,9 @@ slack-notifier send -c "#alerts" -m "Deploy finished"
 slack-notifier send -c alerts -m "Build 42 failed"
 slack-notifier send -c C0123456 -m "By channel ID"
 slack-notifier send -c "https://acme.slack.com/archives/C0123456" -m "By link"
+
+# No link or media previews
+slack-notifier send -c "#reviews" -m "Ready: https://github.com/acme/app/pull/1" --no-unfurl
 
 # Message from stdin
 ./run-build.sh 2>&1 | tail -5 | slack-notifier send -c "#alerts"
@@ -159,7 +162,7 @@ slack-notifier help send --json  # one command
     {
       "name": "send",
       "summary": "Post a message to a channel.",
-      "usage": "slack-notifier send --channel <name> [--message <text>] [--json]",
+      "usage": "slack-notifier send --channel <name> [--message <text>] [--no-unfurl] [--json]",
       "options": [{ "name": "channel", "alias": "c", "required": true, "description": "…" }],
       "examples": ["…"],
       "jsonShape": { "ok": "boolean — …", "ts": "string — …" },
