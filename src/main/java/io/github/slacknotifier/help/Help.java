@@ -71,18 +71,21 @@ public final class Help {
                             + "or a Slack archive link; a name is resolved once and cached, so repeat "
                             + "notifications cost a single API call. With no --message, the message is read "
                             + "from stdin, which is how you pipe build output into a channel.",
-                    PROGRAM + " send --channel <name> [--message <text>] [--json]",
+                    PROGRAM + " send --channel <name> [--message <text>] [--no-unfurl] [--json]",
                     List.of(
                             new OptionSpec("channel", "c", "<name>",
                                     "Channel to post to: a name, a #name, a channel ID, or an archive link.", null, true),
                             new OptionSpec("message", "m", "<text>",
                                     "Message to post. Read from stdin when omitted.", null, null),
+                            new OptionSpec("no-unfurl", null, null,
+                                    "Do not show link or media previews for URLs in the message.", null, null),
                             new OptionSpec("json", null, null,
                                     "Write the result to stdout as one JSON object.", null, null)),
                     List.of(
                             PROGRAM + " send --channel \"#alerts\" --message \"Deploy finished\"",
                             PROGRAM + " send -c alerts -m \"Build 42 failed\"",
                             PROGRAM + " send -c C0123456 -m \"By channel ID\"",
+                            PROGRAM + " send -c \"#reviews\" -m \"Ready: https://github.com/acme/app/pull/1\" --no-unfurl",
                             "./run-build.sh 2>&1 | tail -5 | " + PROGRAM + " send -c \"#alerts\"",
                             PROGRAM + " send -c \"#alerts\" -m \"Deploy finished\" --json"),
                     orderedMap(

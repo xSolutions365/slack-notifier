@@ -68,7 +68,7 @@ class HelpTest {
         }
 
         String sendHelp = Help.renderCommandHelp(Help.findCommand("send").orElseThrow());
-        assertTrue(sendHelp.contains("Usage:\n  slack-notifier send --channel <name> [--message <text>] [--json]"));
+        assertTrue(sendHelp.contains("Usage:\n  slack-notifier send --channel <name> [--message <text>] [--no-unfurl] [--json]"));
         assertTrue(sendHelp.contains("-c, --channel <name>  Channel to post to"));
         assertTrue(sendHelp.contains("[required]"));
         assertTrue(sendHelp.contains("slack-notifier send -c alerts -m \"Build 42 failed\""));

@@ -85,10 +85,11 @@ public final class Main implements Callable<Integer> {
         @Option(names = "--json") boolean json;
         @Option(names = {"-c", "--channel"}) String channel;
         @Option(names = {"-m", "--message"}) String message;
+        @Option(names = "--no-unfurl") boolean noUnfurl;
 
         @Override public Integer call() throws Exception {
             if (printHelp(spec, "send", help || parent.help, json || parent.json)) return 0;
-            return Actions.send(channel, message, json || parent.json);
+            return Actions.send(channel, message, json || parent.json, noUnfurl);
         }
     }
 
