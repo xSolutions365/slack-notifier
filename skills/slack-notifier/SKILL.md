@@ -90,9 +90,9 @@ launcher:
 
 ```bash
 mkdir -p "$HOME/.local/share/slack-notifier" "$HOME/.local/bin" &&
-curl -fL "https://github.com/robintegg-createfuture/slack-notifier/releases/latest/download/slack-notifier.jar" \
+curl -fL "https://github.com/xSolutions365/slack-notifier/releases/latest/download/slack-notifier.jar" \
   -o "$HOME/.local/share/slack-notifier/slack-notifier.jar" &&
-curl -fL "https://github.com/robintegg-createfuture/slack-notifier/releases/latest/download/checksums.txt" \
+curl -fL "https://github.com/xSolutions365/slack-notifier/releases/latest/download/checksums.txt" \
   -o "$HOME/.local/share/slack-notifier/checksums.txt" &&
 (cd "$HOME/.local/share/slack-notifier" && shasum -a 256 -c checksums.txt) &&
 cat > "$HOME/.local/bin/slack-notifier" <<'EOF' &&
